@@ -1,0 +1,11 @@
+
+~
+java:S1845"bRename method "getKontonummer" to prevent any misunderstanding/clash with method "getKontoNummer".(…®¯ºûÿÿÿÿ
+z
+java:S4144"^Update this method so that its implementation is not identical to "getKontoNummer" on line 42.(…®¯ºûÿÿÿÿ
+T
+java:S5993<"9Change the visibility of this constructor to "protected".(Ì¼±Ğøÿÿÿÿ
+T
+java:S5993f"9Change the visibility of this constructor to "protected".(ÒİÇùÿÿÿÿ
+X
+java:S1126„"AReplace this if-then-else statement by a single return statement.(Ï×éˆ

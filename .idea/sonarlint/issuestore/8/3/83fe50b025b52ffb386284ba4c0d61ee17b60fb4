@@ -1,0 +1,25 @@
+
+o
+java:S2293B"YReplace the type specification in this constructor call with the diamond operator ("<>").(äëÄß
+o
+java:S2293H"YReplace the type specification in this constructor call with the diamond operator ("<>").(­’à—
+t
+java:S2293N"YReplace the type specification in this constructor call with the diamond operator ("<>").(éÇÄ…øÿÿÿÿ
+t
+java:S2293m"YReplace the type specification in this constructor call with the diamond operator ("<>").(’ªÑ¬üÿÿÿÿ
+c
+java:S1192K"HDefine a constant instead of duplicating this literal "-------" 3 times.(ÏŠñðýÿÿÿÿ
+S
+java:S1612!"=Replace this lambda with method reference 'Object::toString'.(ö±žâ
+V
+java:S1612""@Replace this lambda with method reference 'System.out::println'.(ú°µŒ
+Q	java:S125#"<This block of commented-out lines of code should be removed.(èý’Í
+Q
+java:S1854‚":Remove this useless assignment to local variable "gesamt".(Æ®È¦
+U
+java:S1854~":Remove this useless assignment to local variable "gesamt".(Ï©üºøÿÿÿÿ
+n
+java:S1602Q"SRemove useless curly braces around statement and then remove useless return keyword(ÒÌâ–øÿÿÿÿ
+Q	java:S125_"<This block of commented-out lines of code should be removed.(¹í‹
+V
+java:S1612y"AReplace this lambda with method reference 'Konto::getKontostand'.(ßßÌr

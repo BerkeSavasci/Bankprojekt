@@ -10,15 +10,17 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
- * @author berkesavasci
- * 08.12.23
- * project: Uebung_3_new
+ * The AktienSpielereien class is a demonstration class that showcases the usage of the Aktie and Konto classes.
+ * It demonstrates how to create and manipulate instances of these classes to perform buying and selling of stocks.
  */
 public class AktienSpielereien {
     private static Aktie aktie;
     private static Konto berkesKonto;
 
 
+    /**
+     * Main method for executing the program.
+     */
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         // Create Aktie instance
         Aktie aktie = new Aktie("Berke GMBH Inc.", 123123, 50);
@@ -49,6 +51,8 @@ public class AktienSpielereien {
             System.out.println("Something went wrong during selling");
             Thread.currentThread().interrupt();
         }
+
+
 
     }
 

@@ -84,27 +84,40 @@ public class Aktie {
         return kurs;
     }
 
+    /**
+     * Returns the name of the Aktie object.
+     *
+     * @return The name of the Aktie object.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of the Aktie object.
+     *
+     * @param name The new name for the Aktie object.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Sets the Wertpapierkennummer of the object.
+     *
+     * @param wertpapierkennummer The new Wertpapierkennummer for the object.
+     */
     public void setWertpapierkennummer(int wertpapierkennummer) {
         this.wertpapierkennummer = wertpapierkennummer;
     }
 
+    /**
+     * Sets the kurs of the object.
+     *
+     * @param kurs The new kurs for the object.
+     */
     public void setKurs(double kurs) {
         this.kurs = kurs;
     }
 
-    public static ScheduledExecutorService getExecutorService() {
-        return executorService;
-    }
-
-    public static void setExecutorService(ScheduledExecutorService executorService) {
-        Aktie.executorService = executorService;
-    }
 }

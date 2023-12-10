@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * stellt ein allgemeines Bank-Konto dar
@@ -43,7 +45,8 @@ public abstract class Konto implements Comparable<Konto> {
      * The map uses Integer as the key type and AbstractMap.SimpleEntry<Aktie, Integer> as the value type.
      * The Integer key represents the unique identifier of a stock, while AbstractMap.SimpleEntry<Aktie, Integer> value represents the stock itself and the number of units held.
      */
-    Map<Integer, AbstractMap.SimpleEntry<Aktie, Integer>> depotMap;
+    private Map<Integer, AbstractMap.SimpleEntry<Aktie, Integer>> depotMap;
+    private final Lock lock = new ReentrantLock();
     /**
      * This variable represents a private static ScheduledExecutorService object that is used to schedule and execute tasks
      * periodically or at a specific time in the future.
@@ -106,21 +109,40 @@ public abstract class Konto implements Comparable<Konto> {
     public Future<Double> kaufauftrag(Aktie a, int anzahl, double hoechstpreis) {
         return executorService.submit(() -> {
             while (true) {
+                double kurs;
+                lock.lock();
+                try {
+                    kurs = a.getKurs();
+                } finally {
+                    lock.unlock();
+                }
                 System.out.println("Checking hoechstpreis!");
-                System.out.println("Stock value is: " + a.getKurs() + " Need: " + hoechstpreis);
-                if (a.getKurs() <= hoechstpreis) {
-                    System.out.println("Hoechstpreis is lower then kurs: " + a.getKurs());
-                    if (getKontostand() >= a.getKurs() * anzahl) {
+                System.out.println("Stock value is: " + kurs + " Need: " + hoechstpreis);
+
+                if (kurs <= hoechstpreis) {
+                    System.out.println("Hoechstpreis is lower then kurs: " + kurs);
+                    double kontostand;
+
+                    lock.lock();
+                    try {
+                        kontostand = getKontostand();
+                    } finally {
+                        lock.unlock();
+                    }
+
+                    if (kontostand >= kurs * anzahl) {
                         System.out.println("Buying stock");
-                        this.setKontostand(this.getKontostand() - anzahl * a.getKurs());
-
-                        setAktienStueckzahl(anzahl);
-
-                        depotMap.put(a.getWertpapierkennummer(), new AbstractMap.SimpleEntry<>(a, anzahl));
-
+                        lock.lock();
+                        try {
+                            this.setKontostand(kontostand - anzahl * kurs);
+                            setAktienStueckzahl(getAktienStueckzahl() + anzahl);
+                            depotMap.put(a.getWertpapierkennummer(), new AbstractMap.SimpleEntry<>(a, anzahl));
+                        } finally {
+                            lock.unlock();
+                        }
                         System.out.println("Bought " + anzahl + " many stocks");
 
-                        return anzahl * a.getKurs();
+                        return anzahl * kurs;
                     } else {
 
                         return 0.0;
@@ -140,26 +162,43 @@ public abstract class Konto implements Comparable<Konto> {
      */
     public Future<Double> verkaufauftrag(String wkn, double minimalpreis) {
         return executorService.submit(() -> {
-            Aktie a = getAktieMitWkn(wkn);
-            AbstractMap.SimpleEntry<Aktie, Integer> aktieIntegerSimpleEntry = depotMap.get(Integer.parseInt(wkn));
+            Aktie a;
+            AbstractMap.SimpleEntry<Aktie, Integer> aktieIntegerSimpleEntry;
+            lock.lock();
+            try {
+                a = getAktieMitWkn(wkn);
+                if (a == null) {
+                    executorService.shutdownNow();
+                    return 0.0;
+                }
+                aktieIntegerSimpleEntry = depotMap.get(Integer.parseInt(wkn));
 
-            if (a == null) {
-                executorService.shutdownNow();
-                return 0.0;
+            } finally {
+                lock.unlock();
             }
 
-
             while (true) {
+                double kurs;
+                lock.lock();
+                try {
+                    kurs = a.getKurs();
+                } finally {
+                    lock.unlock();
+                }
                 System.out.println("Checking hoechstpreis!");
-                System.out.println("Stock value is: " + a.getKurs() + " Need: " + minimalpreis);
-                if (a.getKurs() >= minimalpreis) {
-                    int aktienStueckzahl = getNumberOfAktien(wkn);
-
-                    this.setKontostand(this.getKontostand() + a.getKurs() * aktienStueckzahl);
-                    setAktienStueckzahl(getAktienStueckzahl() - aktieIntegerSimpleEntry.getValue());
-                    depotMap.remove(Integer.parseInt(wkn));
-
-                    return a.getKurs() * aktienStueckzahl;
+                System.out.println("Stock value is: " + kurs + " Need: " + minimalpreis);
+                if (kurs >= minimalpreis) {
+                    int aktienStueckzahl;
+                    lock.lock();
+                    try {
+                        aktienStueckzahl = getNumberOfAktien(wkn);
+                        this.setKontostand(this.getKontostand() + kurs * aktienStueckzahl);
+                        setAktienStueckzahl(getAktienStueckzahl() - aktieIntegerSimpleEntry.getValue());
+                        depotMap.remove(Integer.parseInt(wkn));
+                    } finally {
+                        lock.unlock();
+                    }
+                    return kurs * aktienStueckzahl;
                 }
             }
         });

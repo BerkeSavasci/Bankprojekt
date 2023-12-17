@@ -6,22 +6,11 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author berkesavasci
- * 08.12.23
- * project: Uebung_3_new
+ * A class to generate Stocks
  */
 public class Aktie {
     /**
-     * Represents the name of an object.
-     * <p>
-     * The name is a private String variable that holds the name of an object. It is used to identify and reference the object.
-     * </p>
-     * <p>
-     * <strong>Note:</strong> The name should be unique within the context of the object.
-     * </p>
-     * <p>
-     * This variable is private, meaning it can only be accessed from within the declared class.
-     * </p>
+     * Represents the name of an Aktienobject.
      */
     private String name;
     /**

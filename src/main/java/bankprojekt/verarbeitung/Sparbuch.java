@@ -42,6 +42,7 @@ public class Sparbuch extends Konto {
      *
      * @param inhaber     der Kontoinhaber
      * @param kontonummer die Wunsch-Kontonummer
+     * @param aktienStückzahl die Anzahl von Aktien
      * @throws IllegalArgumentException wenn inhaber null ist
      */
     public Sparbuch(Kunde inhaber, long kontonummer, int aktienStückzahl) {

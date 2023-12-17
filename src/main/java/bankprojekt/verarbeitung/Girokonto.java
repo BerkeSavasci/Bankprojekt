@@ -29,6 +29,7 @@ public class Girokonto extends Konto implements Ueberweisungsfaehig {
      * @param inhaber Kontoinhaber
      * @param nummer  Kontonummer
      * @param dispo   Dispo
+     * @param aktienStueckzahl Aktien Stückzahl
      * @throws IllegalArgumentException wenn der inhaber null ist oder der angegebene dispo negativ bzw. NaN ist
      */
     public Girokonto(Kunde inhaber, long nummer, double dispo, int aktienStueckzahl) {

@@ -55,9 +55,6 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
 
     /**
      * This variable represents a map that stores the stock portfolio of a user.
-     * <p>
-     * The map uses Integer as the key type and AbstractMap.SimpleEntry<Aktie, Integer> as the value type.
-     * The Integer key represents the unique identifier of a stock, while AbstractMap.SimpleEntry<Aktie, Integer> value represents the stock itself and the number of units held.
      */
     private Map<Integer, AbstractMap.SimpleEntry<Aktie, Integer>> depotMap;
     /**
@@ -323,7 +320,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
      *
      * @return Kontonummer
      */
-    public final long getKontonummer() {
+    public long getKontonummer() {
         return nummer;
     }
 

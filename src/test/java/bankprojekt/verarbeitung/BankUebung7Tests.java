@@ -56,7 +56,7 @@ public class BankUebung7Tests {
 
     @Test
     void getAllAdressTest() {
-        String expected = "Mister, Mensch1, Home1" + "\n" + "Misses, Mensch2, Home1" + "\n" + "Mister, Mensch3, Home3";
+        String expected = "Misses, Mensch2, Home1" + "\n" + "Mister, Mensch3, Home3" + "\n" + "Mister, Mensch1, Home1";
 
         Assertions.assertEquals(expected, bank.getKundenadressen());
     }

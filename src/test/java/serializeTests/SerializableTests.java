@@ -35,6 +35,7 @@ public class SerializableTests {
             Assertions.assertNotSame(copy, b);
             Assertions.assertEquals(b.getBankleitzahl(), copy.getBankleitzahl());
             Assertions.assertEquals(b.getKontostand(kontoNo), copy.getKontostand(kontoNo));
+            
         } catch (KontonummerNichtVorhandenException e) {
             e.printStackTrace();
         }
@@ -61,7 +62,6 @@ public class SerializableTests {
             Konto kopie = (Konto) oo.readObject();
             System.out.println(kopie);
         } catch (IOException | ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

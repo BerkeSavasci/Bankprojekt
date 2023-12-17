@@ -1,11 +1,11 @@
 
-r	java:S116#"VRename this field "UPPER_BOUND" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ï…‹8£ òİÄ1
-r	java:S116$"VRename this field "LOWER_BOUND" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ï·ış8£ òİÄ1
+r	java:S116"VRename this field "UPPER_BOUND" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ï…‹8£ òİÄ1
+r	java:S116"VRename this field "LOWER_BOUND" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ï·ış8£ òİÄ1
 >
-java:S1170#"!Make this final field static too.(ï…‹8£ òİÄ1
+java:S1170"!Make this final field static too.(ï…‹8£ òİÄ1
 >
-java:S1170$"!Make this final field static too.(ï·ış8£ òİÄ1
+java:S1170"!Make this final field static too.(ï·ış8£ òİÄ1
 I
-java:S30104",Remove this assignment of "executorService".(…ÑçĞ8¥ òİÄ1
+java:S3010)",Remove this assignment of "executorService".(…ÑçĞ8¥ òİÄ1
 ;
-java:S2119H"Save and re-use this "Random".(¡Å”¦8§ òİÄ1
+java:S2119="Save and re-use this "Random".(¡Å”¦8§ òİÄ1

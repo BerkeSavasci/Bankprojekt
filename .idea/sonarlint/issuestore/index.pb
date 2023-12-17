@@ -120,8 +120,6 @@ a
 0src/main/java/spielereien/AktienSpielereien.java,f/a/fa05585d46f1fbb8af4bdf135542073fe325feff
 Z
 *src/test/java/AktienTests/AktienTests.java,1/e/1e730fbd1c9c1b6e50aa6b38b1a3397d6c86e8c5
-T
-$src/test/java/SerializableTests.java,2/d/2d352ae838fd76221553e04cfa87e5e72fe54b13
 9
 	konto.dat,2/8/28a285c7e098ab97b2373e312bde475b93398703
 c
@@ -296,3 +294,7 @@ G.idea/sonarlint/issuestore/2/c/2cabb939da04d3de3a200bf2b575690e1a16316d,1/0/10
 Q.idea/sonarlint/securityhotspotstore/f/3/f3755db6dc6dacfba5ac6f406502789c40d4737b,b/4/b46a558610f1303ba7dceefce1f5055f942aede6
 
 Q.idea/sonarlint/securityhotspotstore/f/4/f47e61cd3e166ab9ed735a790ede934f48b90d37,a/b/ab4f473674ce740209aa7edd6627912c3bc41272
+_
+/src/main/java/formatierung/ZahlenFormatter.java,f/a/fad23b7455e7075a96b7676097242fd25753cb2c
+>
+formatiert.txt,9/d/9d8baff529326e5f01eac3cfb6a6f7cc3e91289b

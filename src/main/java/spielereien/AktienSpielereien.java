@@ -15,7 +15,10 @@ import java.util.concurrent.Future;
  */
 public class AktienSpielereien {
     /**
-     * Main method for executing the program.
+     * Main method to execute the programm
+     * @param args not used
+     * @throws ExecutionException shouldn't happen
+     * @throws InterruptedException shouldn't happen
      */
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         // Create Aktie instance

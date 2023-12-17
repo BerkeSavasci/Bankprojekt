@@ -19,6 +19,9 @@ public class Bank implements Cloneable, Serializable {
      * The default value for the dispo variable.
      */
     private static final int DEFAULT_DISPO = 500;
+    /**
+     * die Bankleitzahl von der Bank
+     */
     private final long bankleitzahl;
     private static long currKontoNum = 10000000L;
     private static final long MAX_KONTO_NUM = 99999999L;
@@ -29,7 +32,7 @@ public class Bank implements Cloneable, Serializable {
     private final HashMap<Long, Konto> bankKonten = new HashMap<>();
 
     @Override
-    public Object clone(){
+    public Object clone() {
         byte[] arr;
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
              ObjectOutputStream os = new ObjectOutputStream(bos)) {
@@ -44,7 +47,7 @@ public class Bank implements Cloneable, Serializable {
             Object copy = is.readObject();
             is.close();
             return copy;
-        } catch (IOException  | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
         }

@@ -1,8 +1,14 @@
 
-g	java:S112p"FDefine and throw a dedicated exception instead of using a generic one.(ÅÖç£úÿÿÿÿ8Èîİ·¿1
-X
-java:S2696n"6Make the enclosing method "static" or remove this set.(êæğ†ûÿÿÿÿ8Ûîİ·¿1
+h	java:S112†"FDefine and throw a dedicated exception instead of using a generic one.(ÅÖç£úÿÿÿÿ8°ğ»£Æ1
+p
+java:S2975 "SRemove this "clone" implementation; use a copy constructor or copy factory instead.(²ÈŞ8¿ğ»£Æ1
+6
+java:S22251"Return a non null object.(¥¹ï8½â½£Æ1
+e
+java:S1182 "HUse super.clone() to create and seed the cloned instance to be returned.(²ÈŞ8½â½£Æ1
+Y
+java:S2696„"6Make the enclosing method "static" or remove this set.(êæğ†ûÿÿÿÿ8Åğ»£Æ1
 R
-java:S2864®"4Iterate over the "entrySet" instead of the "keySet".(Ïœ¥ò8Üîİ·¿1
+java:S2864Ä"4Iterate over the "entrySet" instead of the "keySet".(Ïœ¥ò8Æğ»£Æ1
 ƒ
-java:S6201›"`Replace this instanceof check and cast with 'instanceof Ueberweisungsfaehig ueberweisungsfaehig'(Úë£İùÿÿÿÿ8ßîİ·¿1
+java:S6201±"`Replace this instanceof check and cast with 'instanceof Ueberweisungsfaehig ueberweisungsfaehig'(Úë£İùÿÿÿÿ8Êğ»£Æ1

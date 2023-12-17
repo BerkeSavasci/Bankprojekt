@@ -51,6 +51,10 @@ class BankTests {
             DEFAULT_KONTO = b.girokontoErstellen(test);
         }
     }
+    @Test
+    void cloneTest() throws CloneNotSupportedException {
+        b.clone();
+    }
 
     /**
      * This test case verifies that the girokontoErstellen method throws a NullPointerException when called with a null parameter.

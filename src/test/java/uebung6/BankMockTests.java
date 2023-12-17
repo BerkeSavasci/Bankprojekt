@@ -29,8 +29,8 @@ class BankMockTests {
         kontoNr1 = bank.mockEinfuegen(mockKonto1);
         kontoNr2 = bank.mockEinfuegen(mockKonto2);
 
-        when(mockKonto1.getKontoNummer()).thenReturn(kontoNr1);
-        when(mockKonto2.getKontoNummer()).thenReturn(kontoNr2);
+        when(mockKonto1.getKontonummer()).thenReturn(kontoNr1);
+        when(mockKonto2.getKontonummer()).thenReturn(kontoNr2);
 
         when(mockKonto1.getInhaber()).thenReturn(new Kunde());
         when(mockKonto2.getInhaber()).thenReturn(new Kunde());

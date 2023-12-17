@@ -3,6 +3,7 @@ package bankprojekt.verwaltung;
 
 import bankprojekt.verarbeitung.*;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,8 +13,7 @@ import java.util.stream.Collectors;
 /**
  * This class represents a bank and manages its accounts.
  */
-public class Bank {
-
+public class Bank implements Cloneable, Serializable {
 
     /**
      * The default value for the dispo variable.
@@ -27,6 +27,28 @@ public class Bank {
      * Kontonummer als Key, Konto als Value
      */
     private final HashMap<Long, Konto> bankKonten = new HashMap<>();
+
+    @Override
+    public Object clone(){
+        byte[] arr;
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+             ObjectOutputStream os = new ObjectOutputStream(bos)) {
+
+            os.writeObject(this);
+            os.flush();
+            arr = bos.toByteArray();
+
+            ByteArrayInputStream bis = new ByteArrayInputStream(arr);
+            ObjectInputStream is = new ObjectInputStream(bis);
+
+            Object copy = is.readObject();
+            is.close();
+            return copy;
+        } catch (IOException  | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * Die Methode `pleitegeierSperren` sperrt alle Konten, deren Kontostand im Minus ist.
@@ -140,7 +162,7 @@ public class Bank {
             throw new NullPointerException("Inhaber darf nicht null gesetzt werden");
         long kontoNr = erstellKontonummer();
 
-        Girokonto newGiro = new Girokonto(inhaber, kontoNr, DEFAULT_DISPO,0);
+        Girokonto newGiro = new Girokonto(inhaber, kontoNr, DEFAULT_DISPO, 0);
         bankKonten.put(kontoNr, newGiro);
 
         return kontoNr;
@@ -158,7 +180,7 @@ public class Bank {
             throw new NullPointerException("Inhaber darf nicht null gesetzt werden");
         long kontoNr = erstellKontonummer();
 
-        Sparbuch newSparbuch = new Sparbuch(inhaber, kontoNr,0);
+        Sparbuch newSparbuch = new Sparbuch(inhaber, kontoNr, 0);
         bankKonten.put(kontoNr, newSparbuch);
 
         return kontoNr;
@@ -281,11 +303,11 @@ public class Bank {
         Konto nachKonto = bankKonten.get(nachKontoNr);
 
         if (vonKonto instanceof Ueberweisungsfaehig && nachKonto instanceof Ueberweisungsfaehig) {
-            boolean ueberweisungGeklappt = sendeUeberweisung((Ueberweisungsfaehig) vonKonto, betrag, nachKonto.getInhaber().getName(), nachKonto.getKontoNummer(),
+            boolean ueberweisungGeklappt = sendeUeberweisung((Ueberweisungsfaehig) vonKonto, betrag, nachKonto.getInhaber().getName(), nachKonto.getKontonummer(),
                     getBankleitzahl(), verwendungszweck);
 
             if (ueberweisungGeklappt) {
-                empfangeUeberweisung((Ueberweisungsfaehig) nachKonto, betrag, vonKonto.getInhaber().getName(), vonKonto.getKontoNummer(),
+                empfangeUeberweisung((Ueberweisungsfaehig) nachKonto, betrag, vonKonto.getInhaber().getName(), vonKonto.getKontonummer(),
                         bankleitzahl, verwendungszweck);
                 return true;
             }

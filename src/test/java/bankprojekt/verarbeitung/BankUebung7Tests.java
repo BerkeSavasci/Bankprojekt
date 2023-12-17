@@ -37,9 +37,9 @@ public class BankUebung7Tests {
         kontoNr2 = bank.mockEinfuegen(konto2);
         kontoNr3 = bank.mockEinfuegen(konto3);
 
-        Mockito.when(konto1.getKontoNummer()).thenReturn(kontoNr1);
-        Mockito.when(konto2.getKontoNummer()).thenReturn(kontoNr2);
-        Mockito.when(konto3.getKontoNummer()).thenReturn(kontoNr3);
+        Mockito.when(konto1.getKontonummer()).thenReturn(kontoNr1);
+        Mockito.when(konto2.getKontonummer()).thenReturn(kontoNr2);
+        Mockito.when(konto3.getKontonummer()).thenReturn(kontoNr3);
 
         Mockito.when(konto1.getInhaber()).thenReturn(kunde1);
         Mockito.when(konto2.getInhaber()).thenReturn(kunde2);

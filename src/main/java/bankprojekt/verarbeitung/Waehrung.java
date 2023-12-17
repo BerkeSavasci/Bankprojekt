@@ -2,13 +2,14 @@ package bankprojekt.verarbeitung;
 
 import org.decimal4j.util.DoubleRounder;
 
+import java.io.Serializable;
 import java.math.RoundingMode;
 
 /**
  * The Waehrung class represents different currencies with their corresponding exchange rates to Euro.
  * It provides methods to convert amounts between Euro and a specified currency.
  */
-public enum Waehrung {
+public enum Waehrung implements Serializable {
     /**
      * Euro
      */

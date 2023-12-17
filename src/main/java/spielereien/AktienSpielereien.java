@@ -14,10 +14,6 @@ import java.util.concurrent.Future;
  * It demonstrates how to create and manipulate instances of these classes to perform buying and selling of stocks.
  */
 public class AktienSpielereien {
-    private static Aktie aktie;
-    private static Konto berkesKonto;
-
-
     /**
      * Main method for executing the program.
      */

@@ -1,7 +1,7 @@
 
 j
-java:S1192u"ODefine a constant instead of duplicating this literal "line.separator" 3 times.(Û¹·›üÿÿÿÿ
+java:S1192v"ODefine a constant instead of duplicating this literal "line.separator" 3 times.(Û¹·›üÿÿÿÿ
 l
-java:S3008"QRename this field "ANREDE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µÖá¿ıÿÿÿÿ
+java:S3008"QRename this field "ANREDE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(µÖá¿ıÿÿÿÿ
 p
-java:S1210Ç"YOverride "equals(Object obj)" to comply with the contract of the "compareTo(T o)" method.(¬§Š
+java:S1210Î"YOverride "equals(Object obj)" to comply with the contract of the "compareTo(T o)" method.(¬§Š

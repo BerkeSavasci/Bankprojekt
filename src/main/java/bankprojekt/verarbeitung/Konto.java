@@ -2,6 +2,7 @@ package bankprojekt.verarbeitung;
 
 import com.google.common.primitives.Doubles;
 
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * stellt ein allgemeines Bank-Konto dar
  */
-public abstract class Konto implements Comparable<Konto> {
+public abstract class Konto implements Comparable<Konto>, Serializable {
     /**
      * der Kontoinhaber
      */
@@ -29,6 +30,13 @@ public abstract class Konto implements Comparable<Konto> {
      * der aktuelle Kontostand
      */
     private double kontostand;
+
+    /**
+     * Wenn das Konto gesperrt ist (gesperrt = true), können keine Aktionen daran mehr vorgenommen werden,
+     * die zum Schaden des Kontoinhabers wären (abheben, Inhaberwechsel)
+     */
+    private boolean gesperrt;
+
     /**
      * in welcher Währung das Konto geführt wird
      */
@@ -40,13 +48,18 @@ public abstract class Konto implements Comparable<Konto> {
     private int aktienStueckzahl;
 
     /**
+     * Represents a lock that can be used for synchronizing access to a specific section of code.
+     */
+    private transient final Lock lock = new ReentrantLock();
+
+
+    /**
      * This variable represents a map that stores the stock portfolio of a user.
      * <p>
      * The map uses Integer as the key type and AbstractMap.SimpleEntry<Aktie, Integer> as the value type.
      * The Integer key represents the unique identifier of a stock, while AbstractMap.SimpleEntry<Aktie, Integer> value represents the stock itself and the number of units held.
      */
     private Map<Integer, AbstractMap.SimpleEntry<Aktie, Integer>> depotMap;
-    private final Lock lock = new ReentrantLock();
     /**
      * This variable represents a private static ScheduledExecutorService object that is used to schedule and execute tasks
      * periodically or at a specific time in the future.
@@ -61,21 +74,6 @@ public abstract class Konto implements Comparable<Konto> {
     protected void setKontostand(double kontostand) {
         this.kontostand = kontostand;
     }
-
-    /**
-     * Gibt die Nummer des Kontos zurück.
-     *
-     * @return die Kontonummer
-     */
-    public long getKontoNummer() {
-        return nummer;
-    }
-
-    /**
-     * Wenn das Konto gesperrt ist (gesperrt = true), können keine Aktionen daran mehr vorgenommen werden,
-     * die zum Schaden des Kontoinhabers wären (abheben, Inhaberwechsel)
-     */
-    private boolean gesperrt;
 
     /**
      * Setzt die beiden Eigenschaften kontoinhaber und kontonummer auf die angegebenen Werte,

@@ -10,7 +10,7 @@ package bankprojekt.verarbeitung;
  */
 public class Girokonto extends Konto implements Ueberweisungsfaehig {
     /**
-     * Wert, bis zu dem das Konto überzogen werden darf
+     * Wert, bis zu dem das Konto überzogen werden darf.
      */
     private double dispo;
 
@@ -26,9 +26,9 @@ public class Girokonto extends Konto implements Ueberweisungsfaehig {
     /**
      * erzeugt ein Girokonto mit den angegebenen Werten
      *
-     * @param inhaber Kontoinhaber
-     * @param nummer  Kontonummer
-     * @param dispo   Dispo
+     * @param inhaber          Kontoinhaber
+     * @param nummer           Kontonummer
+     * @param dispo            Dispo
      * @param aktienStueckzahl Aktien Stückzahl
      * @throws IllegalArgumentException wenn der inhaber null ist oder der angegebene dispo negativ bzw. NaN ist
      */
@@ -39,27 +39,6 @@ public class Girokonto extends Konto implements Ueberweisungsfaehig {
         this.dispo = dispo;
     }
 
-    /**
-     * liefert den Dispo
-     *
-     * @return Dispo von this
-     */
-    public double getDispo() {
-        return dispo;
-    }
-
-
-    /**
-     * setzt den Dispo neu
-     *
-     * @param dispo muss größer sein als 0
-     * @throws IllegalArgumentException wenn dispo negativ bzw. NaN ist
-     */
-    public void setDispo(double dispo) {
-        if (dispo < 0 || Double.isNaN(dispo) || Double.isInfinite(dispo))
-            throw new IllegalArgumentException("Der Dispo ist nicht gültig!");
-        this.dispo = dispo;
-    }
 
     @Override
     public boolean ueberweisungAbsenden(double betrag,
@@ -118,6 +97,27 @@ public class Girokonto extends Konto implements Ueberweisungsfaehig {
         setDispo(neu.euroInWaehrungUmrechnen(dispoInEuro));
 
         super.waehrungswechsel(neu);
+    }
+
+    /**
+     * liefert den Dispo
+     *
+     * @return Dispo von this
+     */
+    public double getDispo() {
+        return dispo;
+    }
+
+    /**
+     * setzt den Dispo neu
+     *
+     * @param dispo muss größer sein als 0
+     * @throws IllegalArgumentException wenn dispo negativ bzw. NaN ist
+     */
+    public void setDispo(double dispo) {
+        if (dispo < 0 || Double.isNaN(dispo) || Double.isInfinite(dispo))
+            throw new IllegalArgumentException("Der Dispo ist nicht gültig!");
+        this.dispo = dispo;
     }
 
     @Override

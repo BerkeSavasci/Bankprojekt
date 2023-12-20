@@ -50,7 +50,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     /**
      * Represents a lock that can be used for synchronizing access to a specific section of code.
      */
-    private transient final Lock lock = new ReentrantLock();
+    private final transient Lock lock = new ReentrantLock();
 
 
     /**
@@ -64,12 +64,10 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     private static final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
 
     /**
-     * setzt den aktuellen Kontostand
-     *
-     * @param kontostand neuer Kontostand
+     * setzt alle Eigenschaften des Kontos auf Standardwerte
      */
-    protected void setKontostand(double kontostand) {
-        this.kontostand = kontostand;
+    protected Konto() {
+        this(Kunde.MUSTERMANN, 1234567, 0);
     }
 
     /**
@@ -81,7 +79,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
      * @param aktienStueckzahl Anzahl der Aktien
      * @throws IllegalArgumentException wenn der inhaber null ist
      */
-    public Konto(Kunde inhaber, long kontonummer, int aktienStueckzahl) {
+    protected Konto(Kunde inhaber, long kontonummer, int aktienStueckzahl) {
         this.aktienStueckzahl = aktienStueckzahl;
         if (inhaber == null)
             throw new IllegalArgumentException("Inhaber darf nicht null sein!");
@@ -116,20 +114,20 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
 
                 if (kurs <= hoechstpreis) {
                     System.out.println("Hoechstpreis is lower then kurs: " + kurs);
-                    double kontostand;
+                    double kontostandTemp;
 
                     lock.lock();
                     try {
-                        kontostand = getKontostand();
+                        kontostandTemp = getKontostand();
                     } finally {
                         lock.unlock();
                     }
 
-                    if (kontostand >= kurs * anzahl) {
+                    if (kontostandTemp >= kurs * anzahl) {
                         System.out.println("Buying stock");
                         lock.lock();
                         try {
-                            this.setKontostand(kontostand - anzahl * kurs);
+                            this.setKontostand(kontostandTemp - anzahl * kurs);
                             setAktienStueckzahl(getAktienStueckzahl() + anzahl);
                             depotMap.put(a.getWertpapierkennummer(), new AbstractMap.SimpleEntry<>(a, anzahl));
                         } finally {
@@ -183,17 +181,17 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
                 System.out.println("Checking hoechstpreis!");
                 System.out.println("Stock value is: " + kurs + " Need: " + minimalpreis);
                 if (kurs >= minimalpreis) {
-                    int aktienStueckzahl;
+                    int aktienStueckzahlTemp;
                     lock.lock();
                     try {
-                        aktienStueckzahl = getNumberOfAktien(wkn);
-                        this.setKontostand(this.getKontostand() + kurs * aktienStueckzahl);
+                        aktienStueckzahlTemp = getNumberOfAktien(wkn);
+                        this.setKontostand(this.getKontostand() + kurs * aktienStueckzahlTemp);
                         setAktienStueckzahl(getAktienStueckzahl() - aktieIntegerSimpleEntry.getValue());
                         depotMap.remove(Integer.parseInt(wkn));
                     } finally {
                         lock.unlock();
                     }
-                    return kurs * aktienStueckzahl;
+                    return kurs * aktienStueckzahlTemp;
                 }
             }
         });
@@ -227,6 +225,48 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
         return aktieIntegerSimpleEntry.getValue();
     }
 
+
+    /**
+     * Sie zahlt den in der Währung w angegebenen Betrag ein.
+     *
+     * @param betrag Geld einzuzahlen
+     * @param w      Währung des Geldes
+     */
+    public void einzahlen(double betrag, Waehrung w) {
+        if (betrag < 0 || !Doubles.isFinite(betrag)) {
+            throw new IllegalArgumentException("Falscher Betrag");
+        }
+        double betragInEuro = w.waehrungInEuroUmrechnen(betrag);
+        double betragInKontoWaehrung = getAktuelleWaehrung().euroInWaehrungUmrechnen(betragInEuro);
+
+        einzahlen(betragInKontoWaehrung);
+    }
+
+    /**
+     * Erhöht den Kontostand um den eingezahlten Betrag.
+     *
+     * @param betrag double
+     * @throws IllegalArgumentException wenn der betrag negativ ist
+     */
+    public void einzahlen(double betrag) {
+        if (betrag < 0 || !Doubles.isFinite(betrag)) {
+            throw new IllegalArgumentException("Falscher Betrag");
+        }
+        setKontostand(getKontostand() + betrag);
+    }
+
+    /**
+     * Versucht den angegebenen Betrag in der angegebenen Währung vom Konto abzuheben.
+     *
+     * @param betrag der abzuhebende Betrag
+     * @param w      die Währung des Betrags
+     * @return true, wenn die Abhebung erfolgreich war, sonst false
+     * @throws GesperrtException wenn das Konto gesperrt ist
+     */
+    public boolean abheben(double betrag, Waehrung w) throws GesperrtException {
+        return false;
+    }
+
     /**
      * Gibt die Anzahl der Aktien zurück.
      *
@@ -245,17 +285,6 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
         this.aktienStueckzahl = aktienStueckzahl;
     }
 
-    /**
-     * Versucht den angegebenen Betrag in der angegebenen Währung vom Konto abzuheben.
-     *
-     * @param betrag der abzuhebende Betrag
-     * @param w      die Währung des Betrags
-     * @return true, wenn die Abhebung erfolgreich war, sonst false
-     * @throws GesperrtException wenn das Konto gesperrt ist
-     */
-    public boolean abheben(double betrag, Waehrung w) throws GesperrtException {
-        return false;
-    }
 
     /**
      * Sie liefert die Währung zurück, in der das Konto aktuell geführt wird.
@@ -276,11 +305,14 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     }
 
     /**
-     * setzt alle Eigenschaften des Kontos auf Standardwerte
+     * setzt den aktuellen Kontostand
+     *
+     * @param kontostand neuer Kontostand
      */
-    public Konto() {
-        this(Kunde.MUSTERMANN, 1234567, 0);
+    protected void setKontostand(double kontostand) {
+        this.kontostand = kontostand;
     }
+
 
     /**
      * liefert den Kontoinhaber zurück
@@ -334,35 +366,6 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     }
 
     /**
-     * Sie zahlt den in der Währung w angegebenen Betrag ein.
-     *
-     * @param betrag Geld einzuzahlen
-     * @param w      Währung des Geldes
-     */
-    public void einzahlen(double betrag, Waehrung w) {
-        if (betrag < 0 || !Doubles.isFinite(betrag)) {
-            throw new IllegalArgumentException("Falscher Betrag");
-        }
-        double betragInEuro = w.waehrungInEuroUmrechnen(betrag);
-        double betragInKontoWaehrung = getAktuelleWaehrung().euroInWaehrungUmrechnen(betragInEuro);
-
-        einzahlen(betragInKontoWaehrung);
-    }
-
-    /**
-     * Erhöht den Kontostand um den eingezahlten Betrag.
-     *
-     * @param betrag double
-     * @throws IllegalArgumentException wenn der betrag negativ ist
-     */
-    public void einzahlen(double betrag) {
-        if (betrag < 0 || !Doubles.isFinite(betrag)) {
-            throw new IllegalArgumentException("Falscher Betrag");
-        }
-        setKontostand(getKontostand() + betrag);
-    }
-
-    /**
      * Mit dieser Methode wird der geforderte Betrag vom Konto abgehoben, wenn es nicht gesperrt ist
      * und die speziellen Abheberegeln des jeweiligen Kontotyps die Abhebung erlauben
      *
@@ -389,20 +392,6 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
         this.gesperrt = false;
     }
 
-
-    /**
-     * liefert eine String-Ausgabe, wenn das Konto gesperrt ist
-     *
-     * @return "GESPERRT", wenn das Konto gesperrt ist, ansonsten ""
-     */
-    public final String getGesperrtText() {
-        if (this.gesperrt) {
-            return "GESPERRT";
-        } else {
-            return "";
-        }
-    }
-
     /**
      * liefert die ordentlich formatierte Kontonummer
      *
@@ -419,6 +408,19 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
      */
     public String getKontostandFormatiert() {
         return String.format("%10.2f %s", this.getKontostand(), this.w);
+    }
+
+    /**
+     * liefert eine String-Ausgabe, wenn das Konto gesperrt ist
+     *
+     * @return "GESPERRT", wenn das Konto gesperrt ist, ansonsten ""
+     */
+    public final String getGesperrtText() {
+        if (this.gesperrt) {
+            return "GESPERRT";
+        } else {
+            return "";
+        }
     }
 
     /**

@@ -31,26 +31,17 @@ public class Bank implements Cloneable, Serializable {
      */
     private final HashMap<Long, Konto> bankKonten = new HashMap<>();
 
-    @Override
-    public Object clone() {
-        byte[] arr;
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
-             ObjectOutputStream os = new ObjectOutputStream(bos)) {
 
-            os.writeObject(this);
-            os.flush();
-            arr = bos.toByteArray();
-
-            ByteArrayInputStream bis = new ByteArrayInputStream(arr);
-            ObjectInputStream is = new ObjectInputStream(bis);
-
-            Object copy = is.readObject();
-            is.close();
-            return copy;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
+    /**
+     * Erstellt eine Bank mit der angegebenen Bankleitzahl
+     *
+     * @param bankleitzahl Bankleitzahl
+     * @throws IllegalArgumentException falls die Bankleitzahl kleiner oder gleich 0 ist
+     */
+    public Bank(long bankleitzahl) throws IllegalArgumentException {
+        if (bankleitzahl <= 0)
+            throw new IllegalArgumentException("Bankleitzahl muss größer als 0 sein");
+        this.bankleitzahl = bankleitzahl;
     }
 
     /**
@@ -100,27 +91,6 @@ public class Bank implements Cloneable, Serializable {
         return availableKontoNums;
     }
 
-    /**
-     * Erstellt eine Bank mit der angegebenen Bankleitzahl
-     *
-     * @param bankleitzahl Bankleitzahl
-     * @throws IllegalArgumentException falls die Bankleitzahl kleiner oder gleich 0 ist
-     */
-    public Bank(long bankleitzahl) throws IllegalArgumentException {
-        if (bankleitzahl <= 0)
-            throw new IllegalArgumentException("Bankleitzahl muss größer als 0 sein");
-        this.bankleitzahl = bankleitzahl;
-    }
-
-    /**
-     * Gibt die Bankleitzahl der Bank zurück.
-     *
-     * @return die Bankleitzahl der Bank
-     */
-    public long getBankleitzahl() {
-        return this.bankleitzahl;
-    }
-
     private boolean containsKey(long key) {
         return bankKonten.containsKey(key);
     }
@@ -130,9 +100,9 @@ public class Bank implements Cloneable, Serializable {
      *
      * @return die neue Kontonummer
      */
-    private long erstellKontonummer() {
+    private static long erstellKontonummer() {
         if (currKontoNum < MAX_KONTO_NUM)
-            return currKontoNum++;
+             return currKontoNum++;
         else {
             throw new RuntimeException("Max Limit reached for konto Numbers");
         }
@@ -270,19 +240,6 @@ public class Bank implements Cloneable, Serializable {
             return false;
     }
 
-    /**
-     * Liefert den Kontostand des Kontos mit der angegebenen Kontonummer zurück.
-     *
-     * @param nummer die Kontonummer des Kontos
-     * @return den Kontostand des Kontos mit der angegebenen Kontonummer
-     * @throws KontonummerNichtVorhandenException wenn die angegebene Kontonummer nicht existiert
-     */
-    public double getKontostand(long nummer) throws KontonummerNichtVorhandenException {
-        if (containsKey(nummer)) {
-            return bankKonten.get(nummer).getKontostand();
-        } else
-            throw new KontonummerNichtVorhandenException(nummer);
-    }
 
     /**
      * Überweist den angegebenen Betrag vom überweisungsfähigen Konto mit der Nummer vonKontoNr zum überweisungsfähigen
@@ -355,5 +312,50 @@ public class Bank implements Cloneable, Serializable {
     void empfangeUeberweisung(Ueberweisungsfaehig empfaenger, double betrag, String vorname, long vonKontonr,
                               long vonBlz, String verwendungszweck) {
         empfaenger.ueberweisungEmpfangen(betrag, vorname, vonKontonr, vonBlz, verwendungszweck);
+    }
+
+    /**
+     * Liefert den Kontostand des Kontos mit der angegebenen Kontonummer zurück.
+     *
+     * @param nummer die Kontonummer des Kontos
+     * @return den Kontostand des Kontos mit der angegebenen Kontonummer
+     * @throws KontonummerNichtVorhandenException wenn die angegebene Kontonummer nicht existiert
+     */
+    public double getKontostand(long nummer) throws KontonummerNichtVorhandenException {
+        if (containsKey(nummer)) {
+            return bankKonten.get(nummer).getKontostand();
+        } else
+            throw new KontonummerNichtVorhandenException(nummer);
+    }
+
+    /**
+     * Gibt die Bankleitzahl der Bank zurück.
+     *
+     * @return die Bankleitzahl der Bank
+     */
+    public long getBankleitzahl() {
+        return this.bankleitzahl;
+    }
+
+    @Override
+    public Bank clone() throws CloneNotSupportedException {
+        byte[] arr;
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+             ObjectOutputStream os = new ObjectOutputStream(bos)) {
+
+            os.writeObject(this);
+            os.flush();
+            arr = bos.toByteArray();
+
+            ByteArrayInputStream bis = new ByteArrayInputStream(arr);
+            ObjectInputStream is = new ObjectInputStream(bis);
+
+            Bank copy = (Bank) is.readObject();
+            is.close();
+            return copy;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new CloneNotSupportedException();
+        }
     }
 }

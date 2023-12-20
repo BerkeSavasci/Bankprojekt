@@ -52,6 +52,11 @@ class BankTests {
         }
     }
     @Test
+    void getAllekontenTest(){
+        System.out.println(b.getAlleKonten());
+    }
+
+    @Test
     void cloneTest() throws CloneNotSupportedException {
         b.clone();
     }

@@ -43,15 +43,6 @@ public class Aktie {
     }
 
     /**
-     * Returns the unique identifier for this Aktie object.
-     *
-     * @return the wertpapierkennummer of the Aktie object
-     */
-    public int getWertpapierkennummer() {
-        return wertpapierkennummer;
-    }
-
-    /**
      * Generates a random price for the Aktie object.
      * The generated price is in percentage, which is added to the current price.
      * The generated price is a random value between the lower bound and upper boound.
@@ -80,6 +71,15 @@ public class Aktie {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Returns the unique identifier for this Aktie object.
+     *
+     * @return the wertpapierkennummer of the Aktie object
+     */
+    public int getWertpapierkennummer() {
+        return wertpapierkennummer;
     }
 
     /**

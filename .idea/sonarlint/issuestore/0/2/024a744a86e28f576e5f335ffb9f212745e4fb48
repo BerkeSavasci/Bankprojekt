@@ -1,13 +1,3 @@
 
-[
-java:S5993T"9Change the visibility of this constructor to "protected".(¸ùÒ—ÿÿÿÿÿ8£›ËŸÅ1
-\
-java:S5993™"9Change the visibility of this constructor to "protected".(ÒÝÇùÿÿÿÿ8£›ËŸÅ1
-b
-java:S11245"EReorder the modifiers to comply with the Java Language Specification.(ÀÝˆ¼8ÀË’˜Æ1
-`
-java:S1117w">Rename "kontostand" which hides the field declared at line 32.(ÚÏØ°üÿÿÿÿ8§›ËŸÅ1
-b
-java:S1117º"DRename "aktienStueckzahl" which hides the field declared at line 48.(ë£ºÙ8¨›ËŸÅ1
 _
-java:S1126·"AReplace this if-then-else statement by a single return statement.(Ï×éˆ8¬›ËŸÅ1
+java:S1126¹"AReplace this if-then-else statement by a single return statement.(Ï×éˆ8¬›ËŸÅ1

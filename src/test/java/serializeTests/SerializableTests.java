@@ -30,13 +30,13 @@ public class SerializableTests {
         b.geldEinzahlen(kontoNo, 123123);
 
         try {
-            Bank copy = (Bank) b.clone();
+            Bank copy = b.clone();
 
             Assertions.assertNotSame(copy, b);
             Assertions.assertEquals(b.getBankleitzahl(), copy.getBankleitzahl());
             Assertions.assertEquals(b.getKontostand(kontoNo), copy.getKontostand(kontoNo));
-            
-        } catch (KontonummerNichtVorhandenException e) {
+
+        } catch (KontonummerNichtVorhandenException | CloneNotSupportedException e) {
             e.printStackTrace();
         }
     }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.times;
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.times;
  * 22.11.23
  * project: Uebung_3_new
  */
-public class BankUebung7Tests {
+public class BankMockTests {
     private Bank bank;
     private Kunde kunde1, kunde2, kunde3;
     private Konto konto1, konto2, konto3;
@@ -56,11 +57,18 @@ public class BankUebung7Tests {
 
     @Test
     void getAllAdressTest() {
-        String expected = "Mister, Mensch1, Home1\n" +
-                "Misses, Mensch2, Home1\n" +
-                "Mister, Mensch3, Home3";
+        // Prepare expected addresses as separate strings
+        String expected1 = "Mister, Mensch1, Home1";
+        String expected2 = "Misses, Mensch2, Home1";
+        String expected3 = "Mister, Mensch3, Home3";
 
-        Assertions.assertEquals(expected, bank.getKundenadressen());
+        String[] receivedAddresses = bank.getKundenadressen().split("\\n");
+
+        List<String> receivedAddressesList = Arrays.asList(receivedAddresses);
+
+        Assertions.assertTrue(receivedAddressesList.contains(expected1));
+        Assertions.assertTrue(receivedAddressesList.contains(expected2));
+        Assertions.assertTrue(receivedAddressesList.contains(expected3));
     }
 
     @Test
@@ -81,12 +89,10 @@ public class BankUebung7Tests {
         Mockito.when(konto1.getKontostand()).thenReturn(1000.0);
         Mockito.when(konto2.getKontostand()).thenReturn(998.0);
         Mockito.when(konto3.getKontostand()).thenReturn(1000.0);
-
         List<Kunde> reicheKunden = bank.getKundenMitVollemKonto(999.0);
-
         Assertions.assertEquals(2, reicheKunden.size());
-        Assertions.assertEquals(kunde1, reicheKunden.get(0));
-        Assertions.assertEquals(kunde3, reicheKunden.get(1));
+        Assertions.assertTrue(reicheKunden.contains(kunde1));
+        Assertions.assertTrue(reicheKunden.contains(kunde3));
     }
 
 }

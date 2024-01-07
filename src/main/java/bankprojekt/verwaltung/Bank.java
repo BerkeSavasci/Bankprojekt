@@ -102,7 +102,7 @@ public class Bank implements Cloneable, Serializable {
      */
     private static long erstellKontonummer() {
         if (currKontoNum < MAX_KONTO_NUM)
-             return currKontoNum++;
+            return currKontoNum++;
         else {
             throw new RuntimeException("Max Limit reached for konto Numbers");
         }
@@ -123,41 +123,51 @@ public class Bank implements Cloneable, Serializable {
         return kontoNr;
     }
 
-    /**
-     * Erstellt ein neues Girokonto für einen Kunden und weist ihm eine eindeutige Kontonummer zu.
-     *
-     * @param inhaber der Kontoinhaber
-     * @return die neue Kontonummer
-     * @throws NullPointerException wenn der Kontoinhaber null ist
-     */
-    public long girokontoErstellen(Kunde inhaber) throws NullPointerException {
-        if (inhaber == null)
-            throw new NullPointerException("Inhaber darf nicht null gesetzt werden");
+    public long kontoErstellen(Kontofabrik kontofabrik, Kunde inhaber) throws NullPointerException {
+        if (kontofabrik == null || inhaber == null)
+            throw new NullPointerException("Kontofabrik und Inhaber dürfen nicht null sein");
+
         long kontoNr = erstellKontonummer();
-
-        Girokonto newGiro = new Girokonto(inhaber, kontoNr, DEFAULT_DISPO, 0);
-        bankKonten.put(kontoNr, newGiro);
-
+        Konto konto = kontofabrik.erstellenKonto(inhaber, kontoNr);
+        bankKonten.put(kontoNr, konto);
         return kontoNr;
     }
 
-    /**
-     * Erstellt ein neues Sparbuch für einen Kunden und weist ihm eine eindeutige Kontonummer zu.
-     *
-     * @param inhaber der Kontoinhaber
-     * @return die neue Kontonummer
-     * @throws NullPointerException wenn der Kontoinhaber null ist
-     */
-    public long sparbuchErstellen(Kunde inhaber) throws NullPointerException {
-        if (inhaber == null)
-            throw new NullPointerException("Inhaber darf nicht null gesetzt werden");
-        long kontoNr = erstellKontonummer();
-
-        Sparbuch newSparbuch = new Sparbuch(inhaber, kontoNr, 0);
-        bankKonten.put(kontoNr, newSparbuch);
-
-        return kontoNr;
-    }
+//    /**
+//     * Erstellt ein neues Girokonto für einen Kunden und weist ihm eine eindeutige Kontonummer zu.
+//     *
+//     * @param inhaber der Kontoinhaber
+//     * @return die neue Kontonummer
+//     * @throws NullPointerException wenn der Kontoinhaber null ist
+//     */
+//    public long girokontoErstellen(Kunde inhaber) throws NullPointerException {
+//        if (inhaber == null)
+//            throw new NullPointerException("Inhaber darf nicht null gesetzt werden");
+//        long kontoNr = erstellKontonummer();
+//
+//        Girokonto newGiro = new Girokonto(inhaber, kontoNr, DEFAULT_DISPO, 0);
+//        bankKonten.put(kontoNr, newGiro);
+//
+//        return kontoNr;
+//    }
+//
+//    /**
+//     * Erstellt ein neues Sparbuch für einen Kunden und weist ihm eine eindeutige Kontonummer zu.
+//     *
+//     * @param inhaber der Kontoinhaber
+//     * @return die neue Kontonummer
+//     * @throws NullPointerException wenn der Kontoinhaber null ist
+//     */
+//    public long sparbuchErstellen(Kunde inhaber) throws NullPointerException {
+//        if (inhaber == null)
+//            throw new NullPointerException("Inhaber darf nicht null gesetzt werden");
+//        long kontoNr = erstellKontonummer();
+//
+//        Sparbuch newSparbuch = new Sparbuch(inhaber, kontoNr, 0);
+//        bankKonten.put(kontoNr, newSparbuch);
+//
+//        return kontoNr;
+//    }
 
     /**
      * liefert eine Auflistung von Kontonummer und Kontostand zu jedem Konto zurück

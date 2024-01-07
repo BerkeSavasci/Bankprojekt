@@ -31,8 +31,6 @@ V
 &externalJava/SuesskramautomatTest.java,5/5/5537b89aec0dff4c7efe7e7cd349b39f60081a09
 R
 "externalJava/LambdaUndStreams.java,8/3/83fe50b025b52ffb386284ba4c0d61ee17b60fb4
-l
-<src/test/java/bankprojekt/verarbeitung/BankUebung7Tests.java,f/8/f8674e0ad6389d6b9727503b2683b511f1b3f761
 X
 (src/test/java/uebung6/BankMockTests.java,4/7/4748d4df0b9e1520fe89e008912c539a1b253457
 
@@ -196,8 +194,6 @@ G.idea/sonarlint/issuestore/0/0/0039045c9cf0b5853c1b5112ccd53ddd4b627870,e/4/e4
 Q.idea/sonarlint/securityhotspotstore/a/3/a34ef025dd536cff6c09ae697f077c0395e7be89,9/b/9b1437de63685575cfefad3d185dc1536dd19eeb
 
 Q.idea/sonarlint/securityhotspotstore/4/3/432c4c8aa5b381ed123e3f04f8b3e35684b69845,4/2/42f97f0ccb1a619c548f3042bc54cb5b4db03858
-
-Q.idea/sonarlint/securityhotspotstore/2/d/2d352ae838fd76221553e04cfa87e5e72fe54b13,e/c/ec35bdfbf2c347ab3faadf83e649b61737702309
 w
 G.idea/sonarlint/issuestore/b/0/b0282765e948e4601fcdedd4ada4fd2367d4606a,2/4/2490d93216185b6c0ae1eea39c0057164e81afd5
 w
@@ -298,3 +294,11 @@ _
 /src/main/java/formatierung/ZahlenFormatter.java,f/a/fad23b7455e7075a96b7676097242fd25753cb2c
 >
 formatiert.txt,9/d/9d8baff529326e5f01eac3cfb6a6f7cc3e91289b
+i
+9src/test/java/bankprojekt/verarbeitung/BankMockTests.java,e/3/e3e0007e2f7f33397e428db5822d251a45841569
+g
+7src/main/java/bankprojekt/verarbeitung/Kontofabrik.java,a/2/a29376a32d766cba3a09c9d918b86223178bacd2
+k
+;src/main/java/bankprojekt/verarbeitung/GirokontoFabrik.java,0/3/033336fdc5151593cdf91028f6c875d022f7d94d
+j
+:src/main/java/bankprojekt/verarbeitung/SparbuchFabrik.java,8/9/895dac86a69d0f30496b3e78d21ba8abf980d713

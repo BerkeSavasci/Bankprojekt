@@ -366,17 +366,43 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     }
 
     /**
-     * Mit dieser Methode wird der geforderte Betrag vom Konto abgehoben, wenn es nicht gesperrt ist
-     * und die speziellen Abheberegeln des jeweiligen Kontotyps die Abhebung erlauben
+     * Versucht den angegebenen Betrag vom Konto abzuheben.
      *
-     * @param betrag double
-     * @return true, wenn die Abhebung geklappt hat,
-     * false, wenn sie abgelehnt wurde
-     * @throws GesperrtException        wenn das Konto gesperrt ist
-     * @throws IllegalArgumentException wenn der betrag negativ oder unendlich oder NaN ist
+     * @param betrag der abzuhebende Betrag
+     * @return true, wenn die Abhebung erfolgreich war, sonst false
+     * @throws GesperrtException wenn das Konto gesperrt ist
+     * @throws IllegalArgumentException wenn der Betrag ungültig ist
      */
-    public abstract boolean abheben(double betrag)
-            throws GesperrtException;
+    public boolean abheben(double betrag) throws GesperrtException {
+        if (betrag < 0 || Double.isNaN(betrag) || Double.isInfinite(betrag)) {
+            throw new IllegalArgumentException("Betrag ungültig");
+        }
+        if (this.isGesperrt())
+            throw new GesperrtException(this.getKontonummer());
+        if (validateBetrag(betrag)) {
+            return executeAbheben(betrag);
+        } else
+            return false;
+    }
+
+    /**
+     * Method to validate a given betrag.
+     *
+     * @param betrag The betrag to be validated.
+     * @return Returns true if the betrag is valid, false otherwise.
+     */
+    protected abstract boolean validateBetrag(double betrag);
+
+    /**
+     * Führt einen Abhebevorgang mit dem angegebenen Betrag durch, in Abhängigkeit vom aktuellen Kontostand.
+     *
+     * @param betrag der abzuhebende Betrag
+     * @return true, wenn die Abhebung erfolgreich war, sonst false
+     * */
+    protected boolean executeAbheben(double betrag) {
+        setKontostand(getKontostand() - betrag);
+        return true;
+    }
 
     /**
      * sperrt das Konto, Aktionen zum Schaden des Benutzers sind nicht mehr möglich.

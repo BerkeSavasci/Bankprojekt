@@ -1,6 +1,7 @@
 package serializeTests;
 
 import bankprojekt.verarbeitung.Girokonto;
+import bankprojekt.verarbeitung.GirokontoFabrik;
 import bankprojekt.verarbeitung.Konto;
 import bankprojekt.verarbeitung.Kunde;
 import bankprojekt.verwaltung.Bank;
@@ -26,7 +27,7 @@ public class SerializableTests {
         // Girokonto k = new Girokonto(ich, 1234, 500.0, 0);
         //k.einzahlen(13123);
         Bank b = new Bank(21841L);
-        long kontoNo = b.girokontoErstellen(ich);
+        long kontoNo = b.kontoErstellen(new GirokontoFabrik(), ich);
         b.geldEinzahlen(kontoNo, 123123);
 
         try {

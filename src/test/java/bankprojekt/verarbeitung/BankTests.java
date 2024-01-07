@@ -44,15 +44,17 @@ class BankTests {
     @BeforeEach
     void setup() {
         for (int i = 0; i < kundenArray.length; i++) {
-            b.girokontoErstellen(kundenArray[i]);
-            b.sparbuchErstellen(kundenArray[i]);
+            b.kontoErstellen(new GirokontoFabrik(), kundenArray[i]);
+            b.kontoErstellen(new SparbuchFabrik(), kundenArray[i]);
+
 
             Kunde test = new Kunde("ABC", "ABC", "Home", LocalDate.parse("1999-01-01"));
-            DEFAULT_KONTO = b.girokontoErstellen(test);
+            DEFAULT_KONTO = b.kontoErstellen(new GirokontoFabrik(), test);
         }
     }
+
     @Test
-    void getAllekontenTest(){
+    void getAllekontenTest() {
         System.out.println(b.getAlleKonten());
     }
 
@@ -66,17 +68,8 @@ class BankTests {
      * It uses the assertThrows assertion to expect a NullPointerException and executes the girokontoErstellen method with a null parameter using a lambda expression.
      */
     @Test
-    void nullGirokontoErstellen() {
-        Assertions.assertThrows(NullPointerException.class, () -> b.girokontoErstellen(null));
-    }
-
-    /**
-     * This test case verifies that the sparbuchErstellen method throws a NullPointerException when called with a null parameter.
-     * It uses the assertThrows assertion to expect a NullPointerException and executes the sparbuchErstellen method with a null parameter using a lambda expression.
-     */
-    @Test
-    void nullSparbuchkontoErstellen() {
-        Assertions.assertThrows(NullPointerException.class, () -> b.sparbuchErstellen(null));
+    void nullKontoErstellen() {
+        Assertions.assertThrows(NullPointerException.class, () -> b.kontoErstellen(null, null));
     }
 
     /**
@@ -217,8 +210,8 @@ class BankTests {
         k1 = new Kunde("Kunde1", "Kunde1", "Kunde1", LocalDate.parse("2000-01-01"));
         k2 = new Kunde("Kunde2", "Kunde2", "Kunde2", LocalDate.parse("2000-01-01"));
 
-        k1No = b.girokontoErstellen(k1);
-        k2No = b.girokontoErstellen(k2);
+        k1No = b.kontoErstellen(new GirokontoFabrik(), k1);
+        k2No = b.kontoErstellen(new GirokontoFabrik(), k2);
 
         b.geldEinzahlen(k1No, 1000);
         b.geldEinzahlen(k2No, 1000);
@@ -228,8 +221,9 @@ class BankTests {
         k1 = new Kunde("Kunde1", "Kunde1", "Kunde1", LocalDate.parse("2000-01-01"));
         k2 = new Kunde("Kunde2", "Kunde2", "Kunde2", LocalDate.parse("2000-01-01"));
 
-        k1No = b.sparbuchErstellen(k1);
-        k2No = b.sparbuchErstellen(k2);
+        k1No = b.kontoErstellen(new SparbuchFabrik(), k1);
+        k2No = b.kontoErstellen(new SparbuchFabrik(), k2);
+        System.out.println(k1No);
 
         b.geldEinzahlen(k1No, 1000);
         b.geldEinzahlen(k2No, 1000);

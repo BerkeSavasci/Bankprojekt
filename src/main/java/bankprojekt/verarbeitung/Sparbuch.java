@@ -40,8 +40,8 @@ public class Sparbuch extends Konto {
     /**
      * ein Standard-Sparbuch, das inhaber gehört und die angegebene Kontonummer hat
      *
-     * @param inhaber     der Kontoinhaber
-     * @param kontonummer die Wunsch-Kontonummer
+     * @param inhaber          der Kontoinhaber
+     * @param kontonummer      die Wunsch-Kontonummer
      * @param aktienStueckzahl die Anzahl von Aktien
      * @throws IllegalArgumentException wenn inhaber null ist
      */
@@ -66,28 +66,43 @@ public class Sparbuch extends Konto {
         super.waehrungswechsel(neu);
     }
 
+//    @Override
+//    public boolean abheben(double betrag) throws GesperrtException {
+//        if (betrag < 0 || Double.isNaN(betrag) || Double.isInfinite(betrag)) {
+//            throw new IllegalArgumentException("Betrag ungültig");
+//        }
+//        if (this.isGesperrt()) {
+//            throw new GesperrtException(this.getKontonummer());
+//        }
+//        LocalDate heute = LocalDate.now();
+//        if (heute.getMonth() != zeitpunkt.getMonth() || heute.getYear() != zeitpunkt.getYear()) {
+//            this.bereitsAbgehoben = 0;
+//        }
+//        if (getKontostand() - betrag >= this.getAktuelleWaehrung().euroInWaehrungUmrechnen(0.50) &&
+//                bereitsAbgehoben + betrag <= this.getAktuelleWaehrung().euroInWaehrungUmrechnen(Sparbuch.ABHEBESUMME)) {
+//            setKontostand(getKontostand() - betrag);
+//            bereitsAbgehoben += betrag;
+//            this.zeitpunkt = LocalDate.now();
+//            return true;
+//        } else
+//            return false;
+//    }
+
     @Override
-    public boolean abheben(double betrag) throws GesperrtException {
-        if (betrag < 0 || Double.isNaN(betrag) || Double.isInfinite(betrag)) {
-            throw new IllegalArgumentException("Betrag ungültig");
-        }
-        if (this.isGesperrt()) {
-            throw new GesperrtException(this.getKontonummer());
-        }
+    protected boolean validateBetrag(double betrag) {
         LocalDate heute = LocalDate.now();
         if (heute.getMonth() != zeitpunkt.getMonth() || heute.getYear() != zeitpunkt.getYear()) {
             this.bereitsAbgehoben = 0;
         }
-        if (getKontostand() - betrag >= this.getAktuelleWaehrung().euroInWaehrungUmrechnen(0.50) &&
-                bereitsAbgehoben + betrag <= this.getAktuelleWaehrung().euroInWaehrungUmrechnen(Sparbuch.ABHEBESUMME)) {
-            setKontostand(getKontostand() - betrag);
-            bereitsAbgehoben += betrag;
-            this.zeitpunkt = LocalDate.now();
-            return true;
-        } else
-            return false;
+        return getKontostand() - betrag >= this.getAktuelleWaehrung().euroInWaehrungUmrechnen(0.50) &&
+                bereitsAbgehoben + betrag <= getAktuelleWaehrung().euroInWaehrungUmrechnen(Sparbuch.ABHEBESUMME);
     }
-
+    protected boolean executeAbheben(double betrag) {
+        setKontostand(getKontostand() - betrag);
+        this.bereitsAbgehoben += betrag;
+        this.zeitpunkt = LocalDate.now();
+        return true;
+    }
     @Override
     public boolean abheben(double betrag, Waehrung w) throws GesperrtException {
         if (isGesperrt())

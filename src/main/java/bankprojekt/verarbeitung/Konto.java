@@ -373,7 +373,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
      * @throws GesperrtException wenn das Konto gesperrt ist
      * @throws IllegalArgumentException wenn der Betrag ungültig ist
      */
-    public boolean abheben(double betrag) throws GesperrtException {
+    public final boolean abheben(double betrag) throws GesperrtException {
         if (betrag < 0 || Double.isNaN(betrag) || Double.isInfinite(betrag)) {
             throw new IllegalArgumentException("Betrag ungültig");
         }

@@ -1,6 +1,5 @@
 
 M
 java:S2160"+Override the "equals" method in this class.(Œë³®ûÿÿÿÿ8ŞÇÙÄ1
-W	java:S125F"<This block of commented-out lines of code should be removed.(˜Î®D8¯öşÌ1
 \
-java:S1161d":Add the "@Override" annotation above this method signature(‚™½Ìùÿÿÿÿ8ã¬ŒşÌ1
+java:S1161N":Add the "@Override" annotation above this method signature(‚™½Ìùÿÿÿÿ8ã¬ŒşÌ1

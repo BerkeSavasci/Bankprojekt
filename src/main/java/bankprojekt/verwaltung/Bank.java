@@ -133,42 +133,6 @@ public class Bank implements Cloneable, Serializable {
         return kontoNr;
     }
 
-//    /**
-//     * Erstellt ein neues Girokonto für einen Kunden und weist ihm eine eindeutige Kontonummer zu.
-//     *
-//     * @param inhaber der Kontoinhaber
-//     * @return die neue Kontonummer
-//     * @throws NullPointerException wenn der Kontoinhaber null ist
-//     */
-//    public long girokontoErstellen(Kunde inhaber) throws NullPointerException {
-//        if (inhaber == null)
-//            throw new NullPointerException("Inhaber darf nicht null gesetzt werden");
-//        long kontoNr = erstellKontonummer();
-//
-//        Girokonto newGiro = new Girokonto(inhaber, kontoNr, DEFAULT_DISPO, 0);
-//        bankKonten.put(kontoNr, newGiro);
-//
-//        return kontoNr;
-//    }
-//
-//    /**
-//     * Erstellt ein neues Sparbuch für einen Kunden und weist ihm eine eindeutige Kontonummer zu.
-//     *
-//     * @param inhaber der Kontoinhaber
-//     * @return die neue Kontonummer
-//     * @throws NullPointerException wenn der Kontoinhaber null ist
-//     */
-//    public long sparbuchErstellen(Kunde inhaber) throws NullPointerException {
-//        if (inhaber == null)
-//            throw new NullPointerException("Inhaber darf nicht null gesetzt werden");
-//        long kontoNr = erstellKontonummer();
-//
-//        Sparbuch newSparbuch = new Sparbuch(inhaber, kontoNr, 0);
-//        bankKonten.put(kontoNr, newSparbuch);
-//
-//        return kontoNr;
-//    }
-
     /**
      * liefert eine Auflistung von Kontonummer und Kontostand zu jedem Konto zurück
      *

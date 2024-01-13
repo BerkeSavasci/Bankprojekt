@@ -184,8 +184,6 @@ w
 G.idea/sonarlint/issuestore/7/f/7f177875b2ca6853353f14a806bcd0546b5c724d,d/b/dbe4d8d117e4a5d7a3def3ccb51450fc52c517b0
 w
 G.idea/sonarlint/issuestore/f/4/f47e61cd3e166ab9ed735a790ede934f48b90d37,1/e/1e0ba1c1d7d469dddee1a0be582b2a4533877828
-Å
-Q.idea/sonarlint/securityhotspotstore/6/b/6b9a8088222e6f8649b5b31a34b59b2d7039a718,b/d/bd6e3c8a445e641748c505812869d17ca4823a00
 w
 G.idea/sonarlint/issuestore/0/0/0039045c9cf0b5853c1b5112ccd53ddd4b627870,e/4/e4264a50ec1de8b9d0cd46789eedd048d010e84b
 Å
@@ -276,8 +274,6 @@ w
 G.idea/sonarlint/issuestore/d/9/d97d1c5005f769a3b784188d43f2f30aeea061e4,6/f/6f3ed800a0f89faf1418c72d5092fef934ddc22e
 Å
 Q.idea/sonarlint/securityhotspotstore/f/1/f17b92d781ecdc479022ee5159b7f7dcb5ea4fec,3/1/3186cac2e00bd0962872a32c20c914e529fc4709
-w
-G.idea/sonarlint/issuestore/6/b/6b9a8088222e6f8649b5b31a34b59b2d7039a718,3/9/393e8a75ab1233b90d8445fd606e042a18fae8de
 Å
 Q.idea/sonarlint/securityhotspotstore/8/0/806a0ed715c28089380510b78fb284a8efea0a1b,9/f/9f5e24c2e152e40e10712da412bac5e532321716
 Å
@@ -300,3 +296,5 @@ k
 ;src/main/java/bankprojekt/verarbeitung/GirokontoFabrik.java,0/3/033336fdc5151593cdf91028f6c875d022f7d94d
 j
 :src/main/java/bankprojekt/verarbeitung/SparbuchFabrik.java,8/9/895dac86a69d0f30496b3e78d21ba8abf980d713
+g
+7src/test/java/observerMockTests/KontoObserverTests.java,9/3/9386f9f74521f6a4a97d9b43a672a66f1c320a42

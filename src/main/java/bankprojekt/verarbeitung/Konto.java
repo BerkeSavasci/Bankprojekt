@@ -2,6 +2,8 @@ package bankprojekt.verarbeitung;
 
 import com.google.common.primitives.Doubles;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -64,6 +66,11 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     private static final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
 
     /**
+     * A private final PropertyChangeSupport variable that is used to support property change events in this class.
+     */
+    private final PropertyChangeSupport prop = new PropertyChangeSupport(this);
+
+    /**
      * setzt alle Eigenschaften des Kontos auf Standardwerte
      */
     protected Konto() {
@@ -91,6 +98,24 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     }
 
     /**
+     * Adds a property change listener to the account.
+     *
+     * @param propertyChangeListener the listener to be added
+     */
+    public void anmelden(PropertyChangeListener propertyChangeListener) {
+        prop.addPropertyChangeListener(propertyChangeListener);
+    }
+
+    /**
+     * Removes the property change listener from the account.
+     *
+     * @param propertyChangeListener the listener to be removed
+     */
+    public void abmelden(PropertyChangeListener propertyChangeListener) {
+        prop.removePropertyChangeListener(propertyChangeListener);
+    }
+
+    /**
      * Führt einen Kaufauftrag für eine bestimmte Aktie aus, indem der Kontostand des Kontos überprüft wird
      * und entsprechend Aktien gekauft werden. Gibt den Gesamtpreis der gekauften Aktien zurück.
      *
@@ -100,6 +125,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
      * @return Gesamtpreis der gekauften Aktien
      */
     public Future<Double> kaufauftrag(Aktie a, int anzahl, double hoechstpreis) {
+        int oldAktienStückzZahl = getAktienStueckzahl();
         return executorService.submit(() -> {
             while (true) {
                 double kurs;
@@ -109,11 +135,8 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
                 } finally {
                     lock.unlock();
                 }
-                System.out.println("Checking hoechstpreis!");
-                System.out.println("Stock value is: " + kurs + " Need: " + hoechstpreis);
 
                 if (kurs <= hoechstpreis) {
-                    System.out.println("Hoechstpreis is lower then kurs: " + kurs);
                     double kontostandTemp;
 
                     lock.lock();
@@ -124,7 +147,6 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
                     }
 
                     if (kontostandTemp >= kurs * anzahl) {
-                        System.out.println("Buying stock");
                         lock.lock();
                         try {
                             this.setKontostand(kontostandTemp - anzahl * kurs);
@@ -133,11 +155,8 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
                         } finally {
                             lock.unlock();
                         }
-                        System.out.println("Bought " + anzahl + " many stocks");
-
                         return anzahl * kurs;
                     } else {
-
                         return 0.0;
                     }
                 }
@@ -178,8 +197,6 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
                 } finally {
                     lock.unlock();
                 }
-                System.out.println("Checking hoechstpreis!");
-                System.out.println("Stock value is: " + kurs + " Need: " + minimalpreis);
                 if (kurs >= minimalpreis) {
                     int aktienStueckzahlTemp;
                     lock.lock();
@@ -268,6 +285,45 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     }
 
     /**
+     * Versucht den angegebenen Betrag vom Konto abzuheben.
+     *
+     * @param betrag der abzuhebende Betrag
+     * @return true, wenn die Abhebung erfolgreich war, sonst false
+     * @throws GesperrtException        wenn das Konto gesperrt ist
+     * @throws IllegalArgumentException wenn der Betrag ungültig ist
+     */
+    public final boolean abheben(double betrag) throws GesperrtException {
+        if (betrag < 0 || Double.isNaN(betrag) || Double.isInfinite(betrag)) {
+            throw new IllegalArgumentException("Betrag ungültig");
+        }
+        if (this.isGesperrt())
+            throw new GesperrtException(this.getKontonummer());
+        if (validateBetrag(betrag)) {
+            return executeAbheben(betrag);
+        } else
+            return false;
+    }
+
+    /**
+     * Method to validate a given betrag.
+     *
+     * @param betrag The betrag to be validated.
+     * @return Returns true if the betrag is valid, false otherwise.
+     */
+    protected abstract boolean validateBetrag(double betrag);
+
+    /**
+     * Führt einen Abhebevorgang mit dem angegebenen Betrag durch, in Abhängigkeit vom aktuellen Kontostand.
+     *
+     * @param betrag der abzuhebende Betrag
+     * @return true, wenn die Abhebung erfolgreich war, sonst false
+     */
+    protected boolean executeAbheben(double betrag) {
+        setKontostand(getKontostand() - betrag);
+        return true;
+    }
+
+    /**
      * Gibt die Anzahl der Aktien zurück.
      *
      * @return die Anzahl der Aktien
@@ -277,12 +333,14 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     }
 
     /**
-     * Setzt die Anzahl der Aktien.
+     * Sets the number of shares for the object, fires a property change.
      *
-     * @param aktienStueckzahl die Anzahl der Aktien, die gesetzt werden soll
+     * @param aktienStueckzahl the new number of shares
      */
     public void setAktienStueckzahl(int aktienStueckzahl) {
+        int oldAktienStueckzZahl = this.aktienStueckzahl;
         this.aktienStueckzahl = aktienStueckzahl;
+        prop.firePropertyChange("AktienAnzahl", oldAktienStueckzZahl, getAktienStueckzahl());
     }
 
 
@@ -296,21 +354,26 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     }
 
     /**
-     * Methode, um die aktuelle Währung des Kontos zu ändern.
+     * Changes the currency to a new currency, fires a property change.
      *
-     * @param neu die neue Währung, in der das Konto geführt werden soll
+     * @param neu The new currency to be set.
      */
     public void waehrungswechsel(Waehrung neu) {
+        Waehrung old = this.w;
         this.w = neu;
+        prop.firePropertyChange("waehrung", old, getAktuelleWaehrung());
     }
 
     /**
-     * setzt den aktuellen Kontostand
+     * Sets the kontostand (account balance) to the specified value, fires a property change.
      *
-     * @param kontostand neuer Kontostand
+     * @param kontostand the new kontostand to be set
      */
     protected void setKontostand(double kontostand) {
+        double oldKontoStand = this.kontostand;
         this.kontostand = kontostand;
+        prop.firePropertyChange("kontostand", oldKontoStand, getKontostand());
+
     }
 
 
@@ -365,57 +428,21 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
         return gesperrt;
     }
 
-    /**
-     * Versucht den angegebenen Betrag vom Konto abzuheben.
-     *
-     * @param betrag der abzuhebende Betrag
-     * @return true, wenn die Abhebung erfolgreich war, sonst false
-     * @throws GesperrtException wenn das Konto gesperrt ist
-     * @throws IllegalArgumentException wenn der Betrag ungültig ist
-     */
-    public final boolean abheben(double betrag) throws GesperrtException {
-        if (betrag < 0 || Double.isNaN(betrag) || Double.isInfinite(betrag)) {
-            throw new IllegalArgumentException("Betrag ungültig");
-        }
-        if (this.isGesperrt())
-            throw new GesperrtException(this.getKontonummer());
-        if (validateBetrag(betrag)) {
-            return executeAbheben(betrag);
-        } else
-            return false;
-    }
 
     /**
-     * Method to validate a given betrag.
-     *
-     * @param betrag The betrag to be validated.
-     * @return Returns true if the betrag is valid, false otherwise.
-     */
-    protected abstract boolean validateBetrag(double betrag);
-
-    /**
-     * Führt einen Abhebevorgang mit dem angegebenen Betrag durch, in Abhängigkeit vom aktuellen Kontostand.
-     *
-     * @param betrag der abzuhebende Betrag
-     * @return true, wenn die Abhebung erfolgreich war, sonst false
-     * */
-    protected boolean executeAbheben(double betrag) {
-        setKontostand(getKontostand() - betrag);
-        return true;
-    }
-
-    /**
-     * sperrt das Konto, Aktionen zum Schaden des Benutzers sind nicht mehr möglich.
+     * Sets the "gesperrt" flag to true and fires a property change event.
      */
     public void sperren() {
         this.gesperrt = true;
+        prop.firePropertyChange("gesperrt", false, true);
     }
 
     /**
-     * entsperrt das Konto, alle Kontoaktionen sind wieder möglich.
+     * Sets the "gesperrt" flag to false and fires a property change event.
      */
     public final void entsperren() {
         this.gesperrt = false;
+        prop.firePropertyChange("entsperren", true, false);
     }
 
     /**

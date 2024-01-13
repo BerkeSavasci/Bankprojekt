@@ -1,3 +1,6 @@
 
+s	java:S117€"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(­êÀşÿÿÿÿ8È€Ì˜Ğ1
+k
+java:S1854€"HRemove this useless assignment to local variable "oldAktienStÃ¼ckzZahl".(­êÀşÿÿÿÿ8ôÁÍ˜Ğ1
 _
-java:S1126Ó"AReplace this if-then-else statement by a single return statement.(Ï×éˆ8ÅÜìøÌ1
+java:S1126î"AReplace this if-then-else statement by a single return statement.(Ï×éˆ8ŒÌ˜Ğ1

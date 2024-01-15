@@ -298,3 +298,7 @@ j
 :src/main/java/bankprojekt/verarbeitung/SparbuchFabrik.java,8/9/895dac86a69d0f30496b3e78d21ba8abf980d713
 g
 7src/test/java/observerMockTests/KontoObserverTests.java,9/3/9386f9f74521f6a4a97d9b43a672a66f1c320a42
+k
+;src/main/java/bankprojekt/verarbeitung/KontoController.java,e/5/e5e4af22f500c8cf75bf72cc3ef9729c5e862f40
+k
+;src/main/java/bankprojekt/oberflaeche/KontoOberflaeche.java,c/9/c906895ae454c11f1d1b009e48ffa3f3b3cbc47e

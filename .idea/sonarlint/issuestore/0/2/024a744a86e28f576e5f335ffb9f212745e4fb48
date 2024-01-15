@@ -1,6 +1,9 @@
 
-s	java:S117€"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(­êÀşÿÿÿÿ8È€Ì˜Ğ1
-k
-java:S1854€"HRemove this useless assignment to local variable "oldAktienStÃ¼ckzZahl".(­êÀşÿÿÿÿ8ôÁÍ˜Ğ1
+N
+java:S1948&",Make "kontostand" transient or serializable.(Ù÷âÅıÿÿÿÿ8ö…ÄéĞ1
+L
+java:S1948+"*Make "gesperrt" transient or serializable.(‹ë›İûÿÿÿÿ8ö…ÄéĞ1
+J
+java:S19481"-Make "kontoImPlus" transient or serializable.(î Í²8ö…ÄéĞ1
 _
-java:S1126î"AReplace this if-then-else statement by a single return statement.(Ï×éˆ8ŒÌ˜Ğ1
+java:S1126"AReplace this if-then-else statement by a single return statement.(Ï×éˆ8Œ†ÄéĞ1

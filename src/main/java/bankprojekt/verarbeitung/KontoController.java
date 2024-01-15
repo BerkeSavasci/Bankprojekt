@@ -30,13 +30,28 @@ public class KontoController extends Application {
 
     public void einzahlen(TextField betragText) {
         double betrag  = Double.parseDouble(betragText.getText());
-        model.einzahlen(betrag);
+        try {
+            model.einzahlen(betrag);
+        } catch (IllegalArgumentException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Illegal Value");
+            alert.setContentText("Cannot deposit an Illegal Value");
+            alert.showAndWait();
+        }
     }
 
     public void abheben(TextField betragText) {
         double betrag = Double.parseDouble(betragText.getText());
         try {
-            model.abheben(betrag);
+            boolean successfulWithdrawal = model.abheben(betrag);
+            if (!successfulWithdrawal) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Withdrawal Error");
+                alert.setContentText("The withdrawal amount exceeds the dispo limit.");
+                alert.showAndWait();
+            }
         } catch (GesperrtException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

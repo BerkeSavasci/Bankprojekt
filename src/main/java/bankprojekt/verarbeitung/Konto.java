@@ -35,18 +35,18 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
     /**
      * der aktuelle Kontostand
      */
-    private final ReadOnlyDoubleWrapper kontostand = new ReadOnlyDoubleWrapper();
+    private final transient ReadOnlyDoubleWrapper kontostand = new ReadOnlyDoubleWrapper();
 
     /**
      * der aktuelle gesperrt-Zustand
      */
-    private final ReadOnlyBooleanWrapper gesperrt = new ReadOnlyBooleanWrapper();
+    private final transient ReadOnlyBooleanWrapper gesperrt = new ReadOnlyBooleanWrapper();
 
     /**
      * Zustand der Bilanz.
      * True, wenn der Kontostand im Plus ist, false, wenn er im Minus ist.
      */
-    private final ReadOnlyBooleanWrapper kontoImPlus = new ReadOnlyBooleanWrapper();
+    private final transient ReadOnlyBooleanWrapper kontoImPlus = new ReadOnlyBooleanWrapper();
 
     /**
      * in welcher Währung das Konto geführt wird
@@ -555,5 +555,4 @@ public abstract class Konto implements Comparable<Konto>, Serializable {
         ausgabe += this.getGesperrtText() + System.lineSeparator();
         return ausgabe;
     }
-
 }

@@ -66,7 +66,10 @@ public class KontoOberflaeche extends BorderPane {
     private Button abheben;
 
     /**
-     * erstellt die Oberfläche
+     * Creates a new instance of KontoOberflaeche with the given Konto model and KontoController controller.
+     *
+     * @param model      The Konto object to display and modify.
+     * @param controller The controller object responsible for handling user actions.
      */
     public KontoOberflaeche(Konto model, KontoController controller) {
         ueberschrift = new Text("Ein Konto verändern");
@@ -111,15 +114,10 @@ public class KontoOberflaeche extends BorderPane {
         GridPane.setHalignment(gesperrt, HPos.RIGHT);
         anzeige.add(gesperrt, 1, 2);
         gesperrt.selectedProperty().addListener(e -> controller.sperrenAendern(gesperrt.isSelected()));
-        gesperrt.selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-            if (model.isGesperrt()) {
-                txtGesperrt.setFill(Color.RED);
-                txtGesperrt.setText("Gesperrt");
-            } else {
-                txtGesperrt.setFill(Color.GREEN);
-                txtGesperrt.setText("Entsperrt");
-            }
-        });
+        txtGesperrt.textProperty().bind(Bindings.when(model.gesperrtProperty()).then("Gesperrt")
+                .otherwise("Entsperrt"));
+        txtGesperrt.fillProperty().bind(Bindings.when(model.gesperrtProperty()).then(Color.RED)
+                .otherwise(Color.GREEN));
 
         txtAdresse = new Text("Adresse: ");
         txtAdresse.setFont(new Font("Sans Serif", 15));
@@ -129,7 +127,7 @@ public class KontoOberflaeche extends BorderPane {
         adresse.setPrefRowCount(2);
         GridPane.setHalignment(adresse, HPos.RIGHT);
         anzeige.add(adresse, 1, 3);
-        adresse.textProperty().setValue(model.getInhaber().getAdresse());
+        adresse.textProperty().bindBidirectional(model.getInhaber().adresseProperty());
 
         meldung = new Text("Willkommen lieber Benutzer");
         meldung.setFont(new Font("Sans Serif", 15));

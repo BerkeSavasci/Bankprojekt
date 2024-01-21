@@ -47,7 +47,7 @@ public class Kunde implements Comparable<Kunde>, Serializable {
     /**
      * Die Adresse
      */
-    private StringProperty adresse;
+    private final transient StringProperty adresse;
     /**
      * Geburtstag
      */
